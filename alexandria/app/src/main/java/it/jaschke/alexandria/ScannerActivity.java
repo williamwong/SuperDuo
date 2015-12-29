@@ -55,7 +55,7 @@ public class ScannerActivity extends AppCompatActivity implements ZBarScannerVie
             setResult(Activity.RESULT_OK, scanResultIntent);
             finish();
         } else {
-            Toast.makeText(this, "Wrong ISBN format, try again", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.error_wrong_barcode_format, Toast.LENGTH_SHORT).show();
             mScannerView.startCamera();
         }
     }
