@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -63,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
         Fragment nextFragment;
 
         switch (position){
@@ -80,10 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
 
         }
 
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, nextFragment)
-                .addToBackStack((String) title)
-                .commit();
+        replaceFragment(nextFragment);
     }
 
     public void setTitle(int titleId) {
@@ -119,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            replaceFragment(new SettingsFragment());
             return true;
         }
 
@@ -149,6 +144,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerF
                 .addToBackStack("Book Detail")
                 .commit();
 
+    }
+
+    private void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack((String) title)
+                .commit();
     }
 
     private class MessageReceiver extends BroadcastReceiver {
