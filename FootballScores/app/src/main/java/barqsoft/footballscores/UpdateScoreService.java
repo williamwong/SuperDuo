@@ -24,11 +24,13 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import static barqsoft.footballscores.ScoresDBContract.ScoresTable;
+
 public class UpdateScoreService extends IntentService {
     private static final String TAG = "UpdateScoreService";
 
     public UpdateScoreService() {
-        super("UpdateScoreService");
+        super(TAG);
     }
 
     @Override
@@ -114,19 +116,6 @@ public class UpdateScoreService extends IntentService {
     }
 
     private void processJsonData(String jsonData, Context context, boolean isReal) {
-        // This set of league codes is for the 2015/2016 season. In fall of 2016, they will need to
-        // be updated. Feel free to use the codes
-        final String BUNDESLIGA1 = "394";
-        final String BUNDESLIGA2 = "395";
-        final String LIGUE1 = "396";
-        final String LIGUE2 = "397";
-        final String PREMIER_LEAGUE = "398";
-        final String PRIMERA_DIVISION = "399";
-        final String SEGUNDA_DIVISION = "400";
-        final String SERIE_A = "401";
-        final String PRIMERA_LIGA = "402";
-        final String BUNDESLIGA3 = "403";
-        final String EREDIVISIE = "404";
 
         // JSON property keys
         final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/";
@@ -166,11 +155,12 @@ public class UpdateScoreService extends IntentService {
                 // add leagues here in order to have them be added to the DB.
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
-                if (league.equals(PREMIER_LEAGUE) ||
-                        league.equals(SERIE_A) ||
-                        league.equals(BUNDESLIGA1) ||
-                        league.equals(BUNDESLIGA2) ||
-                        league.equals(PRIMERA_DIVISION)) {
+                int leagueId = Integer.parseInt(league);
+                if (leagueId == Util.SERIE_A ||
+                        leagueId == Util.BUNDESLIGA1 ||
+                        leagueId == Util.PREMIER_LEAGUE ||
+                        leagueId == Util.PRIMERA_DIVISION ||
+                        leagueId == Util.CHAMPIONS_LEAGUE) {
                     matchId = matchData.getJSONObject(LINKS).getJSONObject(SELF).getString("href");
                     matchId = matchId.replace(MATCH_LINK, "");
                     if (!isReal) {
@@ -206,15 +196,15 @@ public class UpdateScoreService extends IntentService {
                     matchDay = matchData.getString(MATCH_DAY);
 
                     ContentValues matchValues = new ContentValues();
-                    matchValues.put(ScoresDBContract.ScoresTable.MATCH_ID, matchId);
-                    matchValues.put(ScoresDBContract.ScoresTable.DATE_COL, date);
-                    matchValues.put(ScoresDBContract.ScoresTable.TIME_COL, time);
-                    matchValues.put(ScoresDBContract.ScoresTable.HOME_COL, homeTeam);
-                    matchValues.put(ScoresDBContract.ScoresTable.AWAY_COL, awayTeam);
-                    matchValues.put(ScoresDBContract.ScoresTable.HOME_GOALS_COL, homeGoals);
-                    matchValues.put(ScoresDBContract.ScoresTable.AWAY_GOALS_COL, awayGoals);
-                    matchValues.put(ScoresDBContract.ScoresTable.LEAGUE_COL, league);
-                    matchValues.put(ScoresDBContract.ScoresTable.MATCH_DAY, matchDay);
+                    matchValues.put(ScoresTable.MATCH_ID, matchId);
+                    matchValues.put(ScoresTable.DATE_COL, date);
+                    matchValues.put(ScoresTable.TIME_COL, time);
+                    matchValues.put(ScoresTable.HOME_COL, homeTeam);
+                    matchValues.put(ScoresTable.AWAY_COL, awayTeam);
+                    matchValues.put(ScoresTable.HOME_GOALS_COL, homeGoals);
+                    matchValues.put(ScoresTable.AWAY_GOALS_COL, awayGoals);
+                    matchValues.put(ScoresTable.LEAGUE_COL, league);
+                    matchValues.put(ScoresTable.MATCH_DAY, matchDay);
 
                     values.add(matchValues);
                 }
@@ -223,7 +213,7 @@ public class UpdateScoreService extends IntentService {
             // Save data
             ContentValues[] data = new ContentValues[values.size()];
             values.toArray(data);
-            int insertedCount = context.getContentResolver().bulkInsert(ScoresDBContract.ScoresTable.CONTENT_URI, data);
+            int insertedCount = context.getContentResolver().bulkInsert(ScoresTable.CONTENT_URI, data);
             Log.d(TAG, "Saved " + insertedCount + " items to the database");
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());

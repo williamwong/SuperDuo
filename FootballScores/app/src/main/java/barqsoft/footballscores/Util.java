@@ -1,26 +1,34 @@
 package barqsoft.footballscores;
 
 public class Util {
-    private static final int SERIE_A = 357;
-    private static final int PREMIER_LEGAUE = 354;
-    private static final int CHAMPIONS_LEAGUE = 362;
-    private static final int PRIMERA_DIVISION = 358;
-    private static final int BUNDESLIGA = 351;
 
-    public static String getLeagueName(int leagueId) {
+    public static final int CHAMPIONS_LEAGUE = 405;
+    public static final int BUNDESLIGA1 = 394;
+    public static final int BUNDESLIGA2 = 395;
+    public static final int LIGUE1 = 396;
+    public static final int LIGUE2 = 397;
+    public static final int PREMIER_LEAGUE = 398;
+    public static final int PRIMERA_DIVISION = 399;
+    public static final int SEGUNDA_DIVISION = 400;
+    public static final int SERIE_A = 401;
+    public static final int PRIMERA_LIGA = 402;
+    public static final int BUNDESLIGA3 = 403;
+    public static final int EREDIVISIE = 404;
+
+    public static int getLeagueName(int leagueId) {
         switch (leagueId) {
             case SERIE_A:
-                return "Serie A";
-            case PREMIER_LEGAUE:
-                return "Premier League";
+                return R.string.serie_a;
+            case PREMIER_LEAGUE:
+                return R.string.premier_league;
             case CHAMPIONS_LEAGUE:
-                return "UEFA Champions League";
+                return R.string.champions_league;
             case PRIMERA_DIVISION:
-                return "Primera Division";
-            case BUNDESLIGA:
-                return "Bundesliga";
+                return R.string.primera_division;
+            case BUNDESLIGA1:
+                return R.string.bundesliga;
             default:
-                return "Not known League Please report";
+                return R.string.league_unknown;
         }
     }
 
@@ -56,7 +64,7 @@ public class Util {
         switch (name) {
             //This is the set of icons that are currently in the app. Feel free to find and add more
             //as you go.
-            case "Arsenal London FC":
+            case "Arsenal FC":
                 return R.drawable.arsenal;
             case "Manchester United FC":
                 return R.drawable.manchester_united;

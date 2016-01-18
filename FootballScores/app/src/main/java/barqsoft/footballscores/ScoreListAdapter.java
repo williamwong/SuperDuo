@@ -65,7 +65,7 @@ public class ScoreListAdapter extends CursorAdapter {
 
             matchDayTextView.setText(Util.getMatchDay(cursor.getInt(COL_MATCH_DAY),
                     cursor.getInt(COL_LEAGUE)));
-            leagueTextView.setText(Util.getLeagueName(cursor.getInt(COL_LEAGUE)));
+            leagueTextView.setText(context.getString(Util.getLeagueName(cursor.getInt(COL_LEAGUE))));
             shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
