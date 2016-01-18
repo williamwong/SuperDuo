@@ -12,8 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class ScoreListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
-{
+import static barqsoft.footballscores.ScoresDBContract.ScoresTable;
+
+public class ScoreListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int SCORES_LOADER = 0;
 
     private ScoreListAdapter mAdapter;
@@ -29,11 +30,9 @@ public class ScoreListFragment extends Fragment implements LoaderManager.LoaderC
         final ListView scoreList = (ListView) view.findViewById(R.id.score_list);
         mAdapter = new ScoreListAdapter(getActivity(), null, 0);
         mAdapter.setSelectedMatchId(MainActivity.sSelectedMatchId);
-        scoreList.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        scoreList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
-            {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ScoreListAdapter.ViewHolder holder = (ScoreListAdapter.ViewHolder) view.getTag();
                 mAdapter.setSelectedMatchId(holder.matchId);
                 MainActivity.sSelectedMatchId = (int) holder.matchId;
@@ -46,22 +45,19 @@ public class ScoreListFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
-    {
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] args = {mFragmentDate};
-        return new CursorLoader(getActivity(), ScoresDBContract.ScoresTable.getScoreWithDateUri(),
-                null, null, args, null);
+        return new CursorLoader(getActivity(), ScoresTable.CONTENT_URI,
+                null, ScoresTable.BY_DATE, args, null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor)
-    {
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         mAdapter.swapCursor(cursor);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader)
-    {
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
         mAdapter.swapCursor(null);
     }
 

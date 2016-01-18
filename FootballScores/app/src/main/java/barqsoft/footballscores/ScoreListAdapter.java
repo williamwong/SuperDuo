@@ -11,8 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ScoreListAdapter extends CursorAdapter
-{
+public class ScoreListAdapter extends CursorAdapter {
     private static final String FOOTBALL_SCORES_HASHTAG = "#FootballScores";
 
     private static final int COL_DATE = 1;
@@ -27,14 +26,12 @@ public class ScoreListAdapter extends CursorAdapter
 
     private double mSelectedMatchId;
 
-    public ScoreListAdapter(Context context, Cursor cursor, int flags)
-    {
+    public ScoreListAdapter(Context context, Cursor cursor, int flags) {
         super(context, cursor, flags);
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent)
-    {
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
         View scoreListItem = LayoutInflater.from(context)
                 .inflate(R.layout.list_item_score, parent, false);
         ViewHolder holder = new ViewHolder(scoreListItem);
@@ -43,8 +40,7 @@ public class ScoreListAdapter extends CursorAdapter
     }
 
     @Override
-    public void bindView(View view, final Context context, Cursor cursor)
-    {
+    public void bindView(View view, final Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
 
         holder.homeName.setText(cursor.getString(COL_HOME));
@@ -57,8 +53,7 @@ public class ScoreListAdapter extends CursorAdapter
 
         ViewGroup container = (ViewGroup) view.findViewById(R.id.match_detail_container);
 
-        if (holder.matchId == mSelectedMatchId)
-        {
+        if (holder.matchId == mSelectedMatchId) {
             // If this view is the selected match, add detail view
             LayoutInflater vi = (LayoutInflater) context.getApplicationContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -73,8 +68,7 @@ public class ScoreListAdapter extends CursorAdapter
             leagueTextView.setText(Util.getLeagueName(cursor.getInt(COL_LEAGUE)));
             shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                     String shareText = holder.homeName.getText() + " "
                             + holder.score.getText() + " "
                             + holder.awayName.getText() + " "
@@ -89,9 +83,7 @@ public class ScoreListAdapter extends CursorAdapter
 
             container.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT));
-        }
-        else
-        {
+        } else {
             container.removeAllViews();
         }
 

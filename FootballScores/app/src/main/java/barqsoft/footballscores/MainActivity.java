@@ -6,8 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     private static final String CURRENT_PAGER_ITEM_KEY = "CURRENT_PAGER_ITEM";
     private static final String SELECTED_MATCH_ID_KEY = "SELECTED_MATCH_ID";
     private static final String PAGER_FRAGMENT_KEY = "PAGER_FRAGMENT";
@@ -41,8 +40,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_about)
-        {
+        if (id == R.id.action_about) {
             startActivity(new Intent(this, AboutActivity.class));
             return true;
         }
@@ -51,8 +49,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
         outState.putInt(CURRENT_PAGER_ITEM_KEY, mPagerFragment.mViewPager.getCurrentItem());
         outState.putInt(SELECTED_MATCH_ID_KEY, sSelectedMatchId);
         getSupportFragmentManager().putFragment(outState, PAGER_FRAGMENT_KEY, mPagerFragment);
@@ -60,8 +57,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         sCurrentPagerItem = savedInstanceState.getInt(CURRENT_PAGER_ITEM_KEY);
         sSelectedMatchId = savedInstanceState.getInt(SELECTED_MATCH_ID_KEY);
         mPagerFragment = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, PAGER_FRAGMENT_KEY);

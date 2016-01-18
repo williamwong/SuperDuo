@@ -24,25 +24,21 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class UpdateScoreService extends IntentService
-{
+public class UpdateScoreService extends IntentService {
     private static final String TAG = "UpdateScoreService";
 
-    public UpdateScoreService()
-    {
+    public UpdateScoreService() {
         super("UpdateScoreService");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent)
-    {
+    protected void onHandleIntent(Intent intent) {
         getData("n2");
         getData("p2");
     }
 
-    private void getData (String timeFrame)
-    {
-        //Creating fetch URL
+    private void getData(String timeFrame) {
+        //Creating URL
         final String BASE_URL = "http://api.football-data.org/alpha/fixtures"; //Base URL
         final String QUERY_TIME_FRAME = "timeFrame"; //Time Frame parameter to determine days
 
@@ -83,23 +79,16 @@ public class UpdateScoreService extends IntentService
                 return;
             }
             jsonData = buffer.toString();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
-        }
-        finally {
-            if (connection != null)
-            {
+        } finally {
+            if (connection != null) {
                 connection.disconnect();
             }
-            if (reader != null)
-            {
+            if (reader != null) {
                 try {
                     reader.close();
-                }
-                catch (IOException e)
-                {
+                } catch (IOException e) {
                     Log.e(TAG, "Error Closing Stream");
                 }
             }
@@ -119,15 +108,12 @@ public class UpdateScoreService extends IntentService
             } else {
                 Log.d(TAG, "Could not connect to server.");
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
     }
 
-    private void processJsonData(String jsonData, Context context, boolean isReal)
-    {
+    private void processJsonData(String jsonData, Context context, boolean isReal) {
         // This set of league codes is for the 2015/2016 season. In fall of 2016, they will need to
         // be updated. Feel free to use the codes
         final String BUNDESLIGA1 = "394";
@@ -172,8 +158,7 @@ public class UpdateScoreService extends IntentService
             JSONArray matches = new JSONObject(jsonData).getJSONArray(FIXTURES);
 
             List<ContentValues> values = new ArrayList<>();
-            for (int i = 0; i < matches.length(); i++)
-            {
+            for (int i = 0; i < matches.length(); i++) {
                 JSONObject matchData = matches.getJSONObject(i);
                 league = matchData.getJSONObject(LINKS).getJSONObject(SOCCER_SEASON).getString("href");
                 league = league.replace(SEASON_LINK, "");
@@ -185,11 +170,10 @@ public class UpdateScoreService extends IntentService
                         league.equals(SERIE_A) ||
                         league.equals(BUNDESLIGA1) ||
                         league.equals(BUNDESLIGA2) ||
-                        league.equals(PRIMERA_DIVISION))
-                {
+                        league.equals(PRIMERA_DIVISION)) {
                     matchId = matchData.getJSONObject(LINKS).getJSONObject(SELF).getString("href");
                     matchId = matchId.replace(MATCH_LINK, "");
-                    if(!isReal){
+                    if (!isReal) {
                         //This if statement changes the match ID of the dummy data so that it all goes into the database
                         matchId = matchId + Integer.toString(i);
                     }
@@ -207,14 +191,12 @@ public class UpdateScoreService extends IntentService
                         time = date.substring(date.indexOf(":") + 1);
                         date = date.substring(0, date.indexOf(":"));
 
-                        if(!isReal){
+                        if (!isReal) {
                             //This if statement changes the dummy data's date to match our current date range.
                             Date fragmentDate = new Date(System.currentTimeMillis() + ((i - 2) * TimeUnit.DAYS.toMillis(1)));
                             date = new SimpleDateFormat("yyyy-MM-dd").format(fragmentDate);
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         Log.e(TAG, e.getMessage());
                     }
                     homeTeam = matchData.getString(HOME_TEAM);
@@ -241,11 +223,9 @@ public class UpdateScoreService extends IntentService
             // Save data
             ContentValues[] data = new ContentValues[values.size()];
             values.toArray(data);
-            int insertedCount = context.getContentResolver().bulkInsert(ScoresDBContract.ScoresTable.getBaseUri(), data);
+            int insertedCount = context.getContentResolver().bulkInsert(ScoresDBContract.ScoresTable.CONTENT_URI, data);
             Log.d(TAG, "Saved " + insertedCount + " items to the database");
-        }
-        catch (JSONException e)
-        {
+        } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
         }
 
