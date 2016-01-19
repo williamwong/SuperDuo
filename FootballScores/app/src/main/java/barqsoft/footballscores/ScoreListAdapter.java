@@ -43,29 +43,46 @@ public class ScoreListAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
 
-        holder.homeName.setText(cursor.getString(COL_HOME));
-        holder.awayName.setText(cursor.getString(COL_AWAY));
-        holder.date.setText(cursor.getString(COL_MATCH_TIME));
-        holder.score.setText(Util.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS)));
         holder.matchId = cursor.getDouble(COL_ID);
-        holder.homeCrest.setImageResource(Util.getTeamCrestByTeamName(cursor.getString(COL_HOME)));
-        holder.awayCrest.setImageResource(Util.getTeamCrestByTeamName(cursor.getString(COL_AWAY)));
 
-        ViewGroup container = (ViewGroup) view.findViewById(R.id.match_detail_container);
+        holder.homeName.setText(cursor.getString(COL_HOME));
+        holder.homeName.setContentDescription(context.getString(R.string.a11y_home_name, holder.homeName.getText()));
+
+        holder.awayName.setText(cursor.getString(COL_AWAY));
+        holder.awayName.setContentDescription(context.getString(R.string.a11y_away_name, holder.awayName.getText()));
+
+        holder.date.setText(cursor.getString(COL_MATCH_TIME));
+        holder.date.setContentDescription(context.getString(R.string.a11y_match_date, holder.date.getText()));
+
+        holder.score.setText(Util.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS)));
+        holder.score.setContentDescription(context.getString(R.string.a11y_match_score, holder.score.getText()));
+
+        holder.homeCrest.setImageResource(Util.getTeamCrestByTeamName(cursor.getString(COL_HOME)));
+        holder.homeCrest.setContentDescription(context.getString(R.string.a11y_home_crest, holder.homeName.getText()));
+
+        holder.awayCrest.setImageResource(Util.getTeamCrestByTeamName(cursor.getString(COL_AWAY)));
+        holder.awayCrest.setContentDescription(context.getString(R.string.a11y_away_crest, holder.awayName.getText()));
 
         if (holder.matchId == mSelectedMatchId) {
             // If this view is the selected match, add detail view
             LayoutInflater vi = (LayoutInflater) context.getApplicationContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View v = vi.inflate(R.layout.fragment_match_detail, container, false);
+            View v = vi.inflate(R.layout.fragment_match_detail, holder.container, false);
 
             TextView matchDayTextView = (TextView) v.findViewById(R.id.matchday_text_view);
             TextView leagueTextView = (TextView) v.findViewById(R.id.league_text_view);
             Button shareButton = (Button) v.findViewById(R.id.share_button);
 
-            matchDayTextView.setText(Util.getMatchDay(cursor.getInt(COL_MATCH_DAY),
-                    cursor.getInt(COL_LEAGUE)));
+            matchDayTextView.setText(context.getString(
+                    Util.getMatchDay(cursor.getInt(COL_MATCH_DAY), cursor.getInt(COL_LEAGUE)),
+                    String.valueOf(cursor.getInt(COL_MATCH_DAY))));
+            matchDayTextView.setContentDescription(context.getString(
+                    R.string.a11y_match_day, matchDayTextView.getText()));
+
             leagueTextView.setText(context.getString(Util.getLeagueName(cursor.getInt(COL_LEAGUE))));
+            leagueTextView.setContentDescription(context.getString(R.string.a11y_league_name, leagueTextView.getText()));
+
+            shareButton.setContentDescription(context.getString(R.string.a11y_share_button));
             shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -81,10 +98,10 @@ public class ScoreListAdapter extends CursorAdapter {
                 }
             });
 
-            container.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT));
+            holder.container.addView(v, 0, new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
-            container.removeAllViews();
+            holder.container.removeAllViews();
         }
 
     }
@@ -100,6 +117,7 @@ public class ScoreListAdapter extends CursorAdapter {
         public final TextView date;
         public final ImageView homeCrest;
         public final ImageView awayCrest;
+        public final ViewGroup container;
         public double matchId;
 
         public ViewHolder(View view) {
@@ -109,6 +127,7 @@ public class ScoreListAdapter extends CursorAdapter {
             date = (TextView) view.findViewById(R.id.data_text_view);
             homeCrest = (ImageView) view.findViewById(R.id.home_crest);
             awayCrest = (ImageView) view.findViewById(R.id.away_crest);
+            container = (ViewGroup) view.findViewById(R.id.match_detail_container);
         }
     }
 }
