@@ -44,6 +44,7 @@
     <!--Widget-->
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="empty_view_text">No scores available</string>
 
     <!--About-->
     <string name="about">About</string>

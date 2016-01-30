@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_item"
@@ -31,8 +32,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/test_text"
-                android:textSize="@dimen/team_name_text_size" />
+                tools:text="Home Name"
+                android:textSize="@dimen/team_name_text_size"
+                android:textColor="#222"/>
         </LinearLayout>
 
         <LinearLayout
@@ -48,8 +50,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/test_text"
-                android:textSize="@dimen/score_text_size" />
+                tools:text="0 - 0"
+                android:textSize="@dimen/score_text_size"
+                android:textColor="#222" />
 
             <TextView
                 android:id="@+id/data_text_view"
@@ -58,7 +61,8 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="@string/test_text" />
+                tools:text="2016-01-30"
+                android:textColor="#222" />
 
         </LinearLayout>
 
@@ -80,8 +84,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/test_text"
-                android:textSize="@dimen/team_name_text_size" />
+                tools:text="Away Name"
+                android:textSize="@dimen/team_name_text_size"
+                android:textColor="#222" />
         </LinearLayout>
 
     </LinearLayout>

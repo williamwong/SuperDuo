@@ -11,18 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import barqsoft.footballscores.ScoresDBContract.ScoresTable;
+
 public class ScoreListAdapter extends CursorAdapter {
     private static final String FOOTBALL_SCORES_HASHTAG = "#FootballScores";
-
-    private static final int COL_DATE = 1;
-    private static final int COL_MATCH_TIME = 2;
-    private static final int COL_HOME = 3;
-    private static final int COL_AWAY = 4;
-    private static final int COL_LEAGUE = 5;
-    private static final int COL_HOME_GOALS = 6;
-    private static final int COL_AWAY_GOALS = 7;
-    private static final int COL_ID = 8;
-    private static final int COL_MATCH_DAY = 9;
 
     private double mSelectedMatchId;
 
@@ -43,24 +35,33 @@ public class ScoreListAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, Cursor cursor) {
         final ViewHolder holder = (ViewHolder) view.getTag();
 
-        holder.matchId = cursor.getDouble(COL_ID);
+        final int matchIdColumnIndex = cursor.getColumnIndex(ScoresTable.MATCH_ID);
+        final int homeColumnIndex = cursor.getColumnIndex(ScoresTable.HOME_COL);
+        final int awayColumnIndex = cursor.getColumnIndex(ScoresTable.AWAY_COL);
+        final int dateColumnIndex = cursor.getColumnIndex(ScoresTable.DATE_COL);
+        final int homeGoalsColumnIndex = cursor.getColumnIndex(ScoresTable.HOME_GOALS_COL);
+        final int awayGoalsColumnIndex = cursor.getColumnIndex(ScoresTable.AWAY_GOALS_COL);
+        final int matchDayColumnIndex = cursor.getColumnIndex(ScoresTable.MATCH_DAY);
+        final int leagueColumnIndex = cursor.getColumnIndex(ScoresTable.LEAGUE_COL);
 
-        holder.homeName.setText(cursor.getString(COL_HOME));
+        holder.matchId = cursor.getDouble(matchIdColumnIndex);
+
+        holder.homeName.setText(cursor.getString(homeColumnIndex));
         holder.homeName.setContentDescription(context.getString(R.string.a11y_home_name, holder.homeName.getText()));
 
-        holder.awayName.setText(cursor.getString(COL_AWAY));
+        holder.awayName.setText(cursor.getString(awayColumnIndex));
         holder.awayName.setContentDescription(context.getString(R.string.a11y_away_name, holder.awayName.getText()));
 
-        holder.date.setText(cursor.getString(COL_MATCH_TIME));
+        holder.date.setText(cursor.getString(dateColumnIndex));
         holder.date.setContentDescription(context.getString(R.string.a11y_match_date, holder.date.getText()));
 
-        holder.score.setText(Util.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS)));
+        holder.score.setText(Util.getScores(cursor.getInt(homeGoalsColumnIndex), cursor.getInt(awayGoalsColumnIndex)));
         holder.score.setContentDescription(context.getString(R.string.a11y_match_score, holder.score.getText()));
 
-        holder.homeCrest.setImageResource(Util.getTeamCrestByTeamName(cursor.getString(COL_HOME)));
+        holder.homeCrest.setImageResource(Util.getTeamCrestByTeamName(cursor.getString(homeColumnIndex)));
         holder.homeCrest.setContentDescription(context.getString(R.string.a11y_home_crest, holder.homeName.getText()));
 
-        holder.awayCrest.setImageResource(Util.getTeamCrestByTeamName(cursor.getString(COL_AWAY)));
+        holder.awayCrest.setImageResource(Util.getTeamCrestByTeamName(cursor.getString(awayColumnIndex)));
         holder.awayCrest.setContentDescription(context.getString(R.string.a11y_away_crest, holder.awayName.getText()));
 
         if (holder.matchId == mSelectedMatchId) {
@@ -74,12 +75,12 @@ public class ScoreListAdapter extends CursorAdapter {
             Button shareButton = (Button) v.findViewById(R.id.share_button);
 
             matchDayTextView.setText(context.getString(
-                    Util.getMatchDay(cursor.getInt(COL_MATCH_DAY), cursor.getInt(COL_LEAGUE)),
-                    String.valueOf(cursor.getInt(COL_MATCH_DAY))));
+                    Util.getMatchDay(cursor.getInt(matchDayColumnIndex), cursor.getInt(leagueColumnIndex)),
+                    String.valueOf(cursor.getInt(matchDayColumnIndex))));
             matchDayTextView.setContentDescription(context.getString(
                     R.string.a11y_match_day, matchDayTextView.getText()));
 
-            leagueTextView.setText(context.getString(Util.getLeagueName(cursor.getInt(COL_LEAGUE))));
+            leagueTextView.setText(context.getString(Util.getLeagueName(cursor.getInt(leagueColumnIndex))));
             leagueTextView.setContentDescription(context.getString(R.string.a11y_league_name, leagueTextView.getText()));
 
             shareButton.setContentDescription(context.getString(R.string.a11y_share_button));

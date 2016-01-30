@@ -22,7 +22,8 @@
 
         <provider
             android:name=".ScoresProvider"
-            android:authorities="barqsoft.footballscores" />
+            android:authorities="barqsoft.footballscores"
+            android:exported="true" />
 
         <activity
             android:name=".AboutActivity"
@@ -44,6 +45,12 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/scores_app_widget_info" />
         </receiver>
+
+        <service
+            android:name=".ScoresWidgetService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
