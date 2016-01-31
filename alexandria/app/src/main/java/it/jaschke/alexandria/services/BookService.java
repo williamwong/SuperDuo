@@ -2,8 +2,11 @@ package it.jaschke.alexandria.services;
 
 import android.app.IntentService;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -84,12 +87,22 @@ public class BookService extends IntentService {
                 null  // sort order
         );
 
-        if(bookEntry.getCount()>0){
+        if (bookEntry != null && bookEntry.getCount() > 0) {
             bookEntry.close();
             return;
         }
 
-        bookEntry.close();
+        if (bookEntry != null) {
+            bookEntry.close();
+        }
+
+        // Check for network connectivity. If not available, return with message to MainActivity
+        if (!isNetworkAvailable()) {
+            Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
+            messageIntent.putExtra(MainActivity.MESSAGE_KEY,getResources().getString(R.string.error_network_unavailable));
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
+            return;
+        }
 
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -229,5 +242,11 @@ public class BookService extends IntentService {
             getContentResolver().insert(AlexandriaContract.CategoryEntry.CONTENT_URI, values);
             values= new ContentValues();
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
  }

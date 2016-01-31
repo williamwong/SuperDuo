@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -23,13 +24,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="@string/title_activity_settings"
-            android:name=".SettingsActivity"
+            android:name=".ScannerActivity"
+            android:label="@string/title_activity_scanner"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
-        </activity>
+            </activity>
 
 
 
