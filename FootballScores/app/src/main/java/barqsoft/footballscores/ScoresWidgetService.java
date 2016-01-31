@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -14,7 +13,6 @@ import java.util.Date;
 import barqsoft.footballscores.ScoresDBContract.ScoresTable;
 
 public class ScoresWidgetService extends RemoteViewsService {
-    private static final String TAG = "ScoresWidgetService";
 
     public ScoresWidgetService() {
     }
@@ -66,8 +64,6 @@ public class ScoresWidgetService extends RemoteViewsService {
         @Override
         public RemoteViews getViewAt(int position) {
 
-            Log.d(TAG, "getViewAt: " + position);
-
             // Retrieve column indices from cursor
             final int matchIdColumnIndex = mCursor.getColumnIndex(ScoresTable.MATCH_ID);
             final int homeColumnIndex = mCursor.getColumnIndex(ScoresTable.HOME_COL);
@@ -77,7 +73,7 @@ public class ScoresWidgetService extends RemoteViewsService {
             final int awayGoalsColumnIndex = mCursor.getColumnIndex(ScoresTable.AWAY_GOALS_COL);
 
             // Get data for this position from content provider
-            double matchId;
+            double matchId = 0;
             String homeName = "";
             String awayName = "";
             String date = "";
@@ -104,6 +100,11 @@ public class ScoresWidgetService extends RemoteViewsService {
             rv.setTextViewText(R.id.score_text_view, score);
             rv.setImageViewResource(R.id.home_crest, homeCrest);
             rv.setImageViewResource(R.id.away_crest, awayCrest);
+
+            // Set click intent
+            final Intent fillInIntent = new Intent();
+            fillInIntent.putExtra(ScoresAppWidget.EXTRA_MATCH_ID, matchId);
+            rv.setOnClickFillInIntent(R.id.list_item_score, fillInIntent);
 
             return rv;
         }

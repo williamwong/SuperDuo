@@ -13,6 +13,8 @@ import android.widget.RemoteViews;
  */
 public class ScoresAppWidget extends AppWidgetProvider {
 
+    public static final String EXTRA_MATCH_ID = "barqsoft.footballscores.matchId";
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
@@ -34,21 +36,16 @@ public class ScoresAppWidget extends AppWidgetProvider {
         // object above.
         rv.setEmptyView(R.id.list_view, R.id.empty_view);
 
-        //
-        // Do additional processing specific to this app widget...
-        //
+        // Setup the a pending intent template. Individuals items of a collection
+        // cannot setup their own pending intents. Instead, the collection as a whole can
+        // setup a pending intent template, and the individual items can set a fillInIntent
+        // to create unique before on an item to item basis.
+        Intent launchIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        rv.setPendingIntentTemplate(R.id.list_view, pendingIntent);
 
         appWidgetManager.updateAppWidget(appWidgetId, rv);
-
-//        // Construct the RemoteViews object
-//        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.scores_app_widget);
-//
-//        Intent launchIntent = new Intent(context, MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
-//        views.setOnClickPendingIntent(R.id.appwidget, pendingIntent);
-//
-//        // Instruct the widget manager to update the widget
-//        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     @Override
@@ -57,16 +54,6 @@ public class ScoresAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
-    }
-
-    @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-    }
-
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
     }
 }
 

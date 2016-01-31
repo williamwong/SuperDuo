@@ -27,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
 
+        // If started with an intent that specified a match, start activity with that match selected.
+        double matchId = getIntent().getDoubleExtra(ScoresAppWidget.EXTRA_MATCH_ID, 0);
+        if (matchId != 0) {
+            sSelectedMatchId = (int) matchId;
+        }
+
         startService(new Intent(this, UpdateScoreService.class));
     }
 
