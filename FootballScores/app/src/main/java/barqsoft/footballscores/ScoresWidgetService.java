@@ -68,7 +68,7 @@ public class ScoresWidgetService extends RemoteViewsService {
             final int matchIdColumnIndex = mCursor.getColumnIndex(ScoresTable.MATCH_ID);
             final int homeColumnIndex = mCursor.getColumnIndex(ScoresTable.HOME_COL);
             final int awayColumnIndex = mCursor.getColumnIndex(ScoresTable.AWAY_COL);
-            final int dateColumnIndex = mCursor.getColumnIndex(ScoresTable.DATE_COL);
+            final int timeColumnIndex = mCursor.getColumnIndex(ScoresTable.TIME_COL);
             final int homeGoalsColumnIndex = mCursor.getColumnIndex(ScoresTable.HOME_GOALS_COL);
             final int awayGoalsColumnIndex = mCursor.getColumnIndex(ScoresTable.AWAY_GOALS_COL);
 
@@ -76,7 +76,7 @@ public class ScoresWidgetService extends RemoteViewsService {
             double matchId = 0;
             String homeName = "";
             String awayName = "";
-            String date = "";
+            String time = "";
             String score = "";
             int homeCrest = 0;
             int awayCrest = 0;
@@ -85,7 +85,7 @@ public class ScoresWidgetService extends RemoteViewsService {
                 matchId = mCursor.getDouble(matchIdColumnIndex);
                 homeName = mCursor.getString(homeColumnIndex);
                 awayName = mCursor.getString(awayColumnIndex);
-                date = mCursor.getString(dateColumnIndex);
+                time = mCursor.getString(timeColumnIndex);
                 score = Util.getScores(mCursor.getInt(homeGoalsColumnIndex), mCursor.getInt(awayGoalsColumnIndex));
                 homeCrest = Util.getTeamCrestByTeamName(mCursor.getString(homeColumnIndex));
                 awayCrest = Util.getTeamCrestByTeamName(mCursor.getString(awayColumnIndex));
@@ -96,7 +96,7 @@ public class ScoresWidgetService extends RemoteViewsService {
 
             rv.setTextViewText(R.id.home_name, homeName);
             rv.setTextViewText(R.id.away_name, awayName);
-            rv.setTextViewText(R.id.data_text_view, date);
+            rv.setTextViewText(R.id.time_text_view, time);
             rv.setTextViewText(R.id.score_text_view, score);
             rv.setImageViewResource(R.id.home_crest, homeCrest);
             rv.setImageViewResource(R.id.away_crest, awayCrest);

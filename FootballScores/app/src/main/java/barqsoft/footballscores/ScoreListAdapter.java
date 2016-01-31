@@ -38,7 +38,7 @@ public class ScoreListAdapter extends CursorAdapter {
         final int matchIdColumnIndex = cursor.getColumnIndex(ScoresTable.MATCH_ID);
         final int homeColumnIndex = cursor.getColumnIndex(ScoresTable.HOME_COL);
         final int awayColumnIndex = cursor.getColumnIndex(ScoresTable.AWAY_COL);
-        final int dateColumnIndex = cursor.getColumnIndex(ScoresTable.DATE_COL);
+        final int timeColumnIndex = cursor.getColumnIndex(ScoresTable.TIME_COL);
         final int homeGoalsColumnIndex = cursor.getColumnIndex(ScoresTable.HOME_GOALS_COL);
         final int awayGoalsColumnIndex = cursor.getColumnIndex(ScoresTable.AWAY_GOALS_COL);
         final int matchDayColumnIndex = cursor.getColumnIndex(ScoresTable.MATCH_DAY);
@@ -52,8 +52,8 @@ public class ScoreListAdapter extends CursorAdapter {
         holder.awayName.setText(cursor.getString(awayColumnIndex));
         holder.awayName.setContentDescription(context.getString(R.string.a11y_away_name, holder.awayName.getText()));
 
-        holder.date.setText(cursor.getString(dateColumnIndex));
-        holder.date.setContentDescription(context.getString(R.string.a11y_match_date, holder.date.getText()));
+        holder.time.setText(cursor.getString(timeColumnIndex));
+        holder.time.setContentDescription(context.getString(R.string.a11y_match_date, holder.time.getText()));
 
         holder.score.setText(Util.getScores(cursor.getInt(homeGoalsColumnIndex), cursor.getInt(awayGoalsColumnIndex)));
         holder.score.setContentDescription(context.getString(R.string.a11y_match_score, holder.score.getText()));
@@ -115,7 +115,7 @@ public class ScoreListAdapter extends CursorAdapter {
         public final TextView homeName;
         public final TextView awayName;
         public final TextView score;
-        public final TextView date;
+        public final TextView time;
         public final ImageView homeCrest;
         public final ImageView awayCrest;
         public final ViewGroup container;
@@ -125,7 +125,7 @@ public class ScoreListAdapter extends CursorAdapter {
             homeName = (TextView) view.findViewById(R.id.home_name);
             awayName = (TextView) view.findViewById(R.id.away_name);
             score = (TextView) view.findViewById(R.id.score_text_view);
-            date = (TextView) view.findViewById(R.id.data_text_view);
+            time = (TextView) view.findViewById(R.id.time_text_view);
             homeCrest = (ImageView) view.findViewById(R.id.home_crest);
             awayCrest = (ImageView) view.findViewById(R.id.away_crest);
             container = (ViewGroup) view.findViewById(R.id.match_detail_container);

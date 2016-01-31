@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical">
 
             <ImageView
@@ -38,7 +38,7 @@
                 android:textColor="#222"/>
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -46,31 +46,30 @@
 
             <TextView
                 android:id="@+id/score_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:gravity="center"
                 tools:text="0 - 0"
                 android:textSize="@dimen/score_text_size"
                 android:textColor="#222" />
 
             <TextView
-                android:id="@+id/data_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:id="@+id/time_text_view"
+                android:layout_below="@id/score_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:gravity="center"
-                tools:text="2016-01-30"
+                tools:text="14:30"
                 android:textColor="#222" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical">
 
             <ImageView
