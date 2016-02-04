@@ -133,10 +133,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
             String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));
             ((TextView) view.findViewById(R.id.categories)).setText(categories);
 
-            if (view.findViewById(R.id.right_container) != null) {
-                view.findViewById(R.id.backButton).setVisibility(View.INVISIBLE);
-            }
-
             setShareBookIntent();
         }
     }
