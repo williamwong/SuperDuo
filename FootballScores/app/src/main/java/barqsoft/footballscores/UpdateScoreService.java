@@ -57,7 +57,7 @@ public class UpdateScoreService extends IntentService {
             URL url = new URL(updateUri.toString());
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
-            connection.addRequestProperty("X-Auth-Token", getString(R.string.api_key));
+            connection.addRequestProperty("X-Auth-Token", BuildConfig.FOOTBALL_API_KEY);
             connection.connect();
 
             // Read the input stream into a String
