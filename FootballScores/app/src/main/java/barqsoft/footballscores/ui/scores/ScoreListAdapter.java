@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.ui.scores;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import barqsoft.footballscores.ScoresDBContract.ScoresTable;
+import barqsoft.footballscores.R;
+import barqsoft.footballscores.Util;
+import barqsoft.footballscores.db.ScoresDBContract.ScoresTable;
 
 public class ScoreListAdapter extends CursorAdapter {
     private static final String FOOTBALL_SCORES_HASHTAG = "#FootballScores";
@@ -84,19 +86,16 @@ public class ScoreListAdapter extends CursorAdapter {
             leagueTextView.setContentDescription(context.getString(R.string.a11y_league_name, leagueTextView.getText()));
 
             shareButton.setContentDescription(context.getString(R.string.a11y_share_button));
-            shareButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String shareText = holder.homeName.getText() + " "
-                            + holder.score.getText() + " "
-                            + holder.awayName.getText() + " "
-                            + FOOTBALL_SCORES_HASHTAG;
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                    shareIntent.setType("text/plain");
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
-                    context.startActivity(shareIntent);
-                }
+            shareButton.setOnClickListener(v1 -> {
+                String shareText = holder.homeName.getText() + " "
+                        + holder.score.getText() + " "
+                        + holder.awayName.getText() + " "
+                        + FOOTBALL_SCORES_HASHTAG;
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+                context.startActivity(shareIntent);
             });
 
             holder.container.addView(v, 0, new ViewGroup.LayoutParams(

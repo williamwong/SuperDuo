@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.ui.scores;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,10 +14,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class PagerFragment extends Fragment {
+import barqsoft.footballscores.R;
+import barqsoft.footballscores.Util;
+
+public class ScoresPagerFragment extends Fragment {
     private static final int NUM_PAGES = 5;
     public ViewPager mViewPager;
-    private final ScoreListFragment[] mScoreListFragments = new ScoreListFragment[5];
+    private final ScoreListFragment[] mScoreListFragments = new ScoreListFragment[NUM_PAGES];
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

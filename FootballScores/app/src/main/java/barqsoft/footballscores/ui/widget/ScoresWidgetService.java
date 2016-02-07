@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.ui.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -10,7 +10,9 @@ import android.widget.RemoteViewsService;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import barqsoft.footballscores.ScoresDBContract.ScoresTable;
+import barqsoft.footballscores.R;
+import barqsoft.footballscores.Util;
+import barqsoft.footballscores.db.ScoresDBContract.ScoresTable;
 
 public class ScoresWidgetService extends RemoteViewsService {
 

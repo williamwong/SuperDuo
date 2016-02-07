@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.ui.scores;
 
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import static barqsoft.footballscores.ScoresDBContract.ScoresTable;
+import barqsoft.footballscores.R;
+
+import static barqsoft.footballscores.db.ScoresDBContract.ScoresTable;
 
 public class ScoreListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int SCORES_LOADER = 0;

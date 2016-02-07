@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.scores.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,22 +21,22 @@
         </activity>
 
         <provider
-            android:name=".ScoresProvider"
+            android:name=".db.ScoresProvider"
             android:authorities="barqsoft.footballscores"
             android:exported="true" />
 
         <activity
-            android:name=".AboutActivity"
+            android:name=".ui.about.AboutActivity"
             android:label="About"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".ui.scores.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="barqsoft.footballscores.MainActivity" />
+                android:value=".ui.scores.MainActivity" />
         </activity>
 
-        <service android:name=".UpdateScoreService" />
+        <service android:name=".api.UpdateScoreService" />
 
-        <receiver android:name=".ScoresAppWidget">
+        <receiver android:name=".ui.widget.ScoresAppWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -47,7 +47,7 @@
         </receiver>
 
         <service
-            android:name=".ScoresWidgetService"
+            android:name=".ui.widget.ScoresWidgetService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_REMOTEVIEWS" />

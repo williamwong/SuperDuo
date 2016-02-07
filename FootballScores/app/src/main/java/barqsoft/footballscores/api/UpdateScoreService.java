@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.api;
 
 import android.app.IntentService;
 import android.content.ContentValues;
@@ -8,6 +8,8 @@ import android.util.Log;
 
 import java.util.List;
 
+import barqsoft.footballscores.BuildConfig;
+import barqsoft.footballscores.Util;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,7 +21,7 @@ import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static barqsoft.footballscores.ScoresDBContract.ScoresTable;
+import static barqsoft.footballscores.db.ScoresDBContract.ScoresTable;
 
 public class UpdateScoreService extends IntentService {
     private static final String TAG = "UpdateScoreService";

@@ -1,11 +1,11 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.api;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import rx.Observable;
 
 /**
- * Created by wwong on 2/6/2016.
+ * Football-Data API interface for Retrofit
  */
 public interface FootballDataApi {
     @GET("fixtures")

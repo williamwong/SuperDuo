@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.db;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -8,9 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import static barqsoft.footballscores.ScoresDBContract.CONTENT_AUTHORITY;
-import static barqsoft.footballscores.ScoresDBContract.ScoresTable;
-
 public class ScoresProvider extends ContentProvider {
     private static final int SCORE_LIST = 100;
     private static final int SCORE_BY_ID = 101;
@@ -19,8 +16,8 @@ public class ScoresProvider extends ContentProvider {
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        URI_MATCHER.addURI(CONTENT_AUTHORITY, ScoresTable.TABLE_PATH, SCORE_LIST);
-        URI_MATCHER.addURI(CONTENT_AUTHORITY, ScoresTable.TABLE_PATH + "/#", SCORE_BY_ID);
+        URI_MATCHER.addURI(ScoresDBContract.CONTENT_AUTHORITY, ScoresDBContract.ScoresTable.TABLE_PATH, SCORE_LIST);
+        URI_MATCHER.addURI(ScoresDBContract.CONTENT_AUTHORITY, ScoresDBContract.ScoresTable.TABLE_PATH + "/#", SCORE_BY_ID);
     }
 
     @Override
@@ -38,9 +35,9 @@ public class ScoresProvider extends ContentProvider {
     public String getType(@NonNull Uri uri) {
         switch (URI_MATCHER.match(uri)) {
             case (SCORE_LIST):
-                return ScoresTable.CONTENT_TYPE;
+                return ScoresDBContract.ScoresTable.CONTENT_TYPE;
             case (SCORE_BY_ID):
-                return ScoresTable.CONTENT_ITEM_TYPE;
+                return ScoresDBContract.ScoresTable.CONTENT_ITEM_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri :" + uri);
         }
@@ -53,11 +50,11 @@ public class ScoresProvider extends ContentProvider {
         String table;
         switch (URI_MATCHER.match(uri)) {
             case (SCORE_LIST):
-                table = ScoresTable.TABLE_NAME;
+                table = ScoresDBContract.ScoresTable.TABLE_NAME;
                 break;
             case (SCORE_BY_ID):
-                table = ScoresTable.TABLE_NAME;
-                selection = ScoresTable.BY_MATCH_ID;
+                table = ScoresDBContract.ScoresTable.TABLE_NAME;
+                selection = ScoresDBContract.ScoresTable.BY_MATCH_ID;
                 selectionArgs = new String[]{uri.getLastPathSegment()};
                 break;
             default:
@@ -82,7 +79,7 @@ public class ScoresProvider extends ContentProvider {
                 int counter = 0;
                 try {
                     for (ContentValues value : values) {
-                        long result = db.insertWithOnConflict(ScoresTable.TABLE_NAME,
+                        long result = db.insertWithOnConflict(ScoresDBContract.ScoresTable.TABLE_NAME,
                                 null, value, SQLiteDatabase.CONFLICT_REPLACE);
                         if (result != -1) {
                             counter++;
