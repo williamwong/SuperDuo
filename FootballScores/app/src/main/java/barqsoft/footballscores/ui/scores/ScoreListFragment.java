@@ -9,7 +9,6 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import barqsoft.footballscores.R;
@@ -32,14 +31,11 @@ public class ScoreListFragment extends Fragment implements LoaderManager.LoaderC
         final ListView scoreList = (ListView) view.findViewById(R.id.score_list);
         mAdapter = new ScoreListAdapter(getActivity(), null, 0);
         mAdapter.setSelectedMatchId(MainActivity.sSelectedMatchId);
-        scoreList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ScoreListAdapter.ViewHolder holder = (ScoreListAdapter.ViewHolder) view.getTag();
-                mAdapter.setSelectedMatchId(holder.matchId);
-                MainActivity.sSelectedMatchId = (int) holder.matchId;
-                mAdapter.notifyDataSetChanged();
-            }
+        scoreList.setOnItemClickListener((parent, view1, position, id) -> {
+            ScoreListAdapter.ViewHolder holder = (ScoreListAdapter.ViewHolder) view1.getTag();
+            mAdapter.setSelectedMatchId(holder.matchId);
+            MainActivity.sSelectedMatchId = (int) holder.matchId;
+            mAdapter.notifyDataSetChanged();
         });
 
         scoreList.setAdapter(mAdapter);

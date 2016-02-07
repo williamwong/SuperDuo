@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import barqsoft.footballscores.R;
-import barqsoft.footballscores.api.UpdateScoreService;
+import barqsoft.footballscores.api.ScoresUpdateService;
 import barqsoft.footballscores.ui.about.AboutActivity;
 import barqsoft.footballscores.ui.widget.ScoresAppWidget;
 
@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
         if (matchId != 0) {
             sSelectedMatchId = (int) matchId;
         }
-
-        startService(new Intent(this, UpdateScoreService.class));
     }
 
     @Override
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AboutActivity.class));
                 return true;
             case R.id.action_refresh:
-                startService(new Intent(this, UpdateScoreService.class));
+                startService(new Intent(this, ScoresUpdateService.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

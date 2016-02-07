@@ -7,7 +7,7 @@ import rx.Observable;
 /**
  * Football-Data API interface for Retrofit
  */
-public interface FootballDataApi {
+interface FootballDataApi {
     @GET("fixtures")
     Observable<FixtureData> getFixtures(@Query("timeFrame") String timeFrame);
 }

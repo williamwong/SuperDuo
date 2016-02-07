@@ -26,8 +26,8 @@ public class ScoresWidgetService extends RemoteViewsService {
 
     class ScoresRemoteViewsFactory implements RemoteViewsFactory {
 
-        private Context mContext;
-        private int mAppWidgetId;
+        private final Context mContext;
+        private final int mAppWidgetId;
         private Cursor mCursor;
 
         public ScoresRemoteViewsFactory(Context context, Intent intent) {

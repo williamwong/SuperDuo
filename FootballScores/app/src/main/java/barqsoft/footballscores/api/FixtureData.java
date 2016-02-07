@@ -24,7 +24,7 @@ public class FixtureData {
     public int count;
     @SerializedName("fixtures")
     @Expose
-    public List<Fixture> fixtures = new ArrayList<Fixture>();
+    public final List<Fixture> fixtures = new ArrayList<Fixture>();
 
     @Generated("org.jsonschema2pojo")
     public class Fixture {

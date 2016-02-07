@@ -15,7 +15,7 @@ import barqsoft.footballscores.R;
 import barqsoft.footballscores.Util;
 import barqsoft.footballscores.db.ScoresDBContract.ScoresTable;
 
-public class ScoreListAdapter extends CursorAdapter {
+class ScoreListAdapter extends CursorAdapter {
     private static final String FOOTBALL_SCORES_HASHTAG = "#FootballScores";
 
     private double mSelectedMatchId;

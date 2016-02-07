@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class ScoresDBHelper extends SQLiteOpenHelper
+class ScoresDBHelper extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "Scores.db";
     private static final int DATABASE_VERSION = 2;

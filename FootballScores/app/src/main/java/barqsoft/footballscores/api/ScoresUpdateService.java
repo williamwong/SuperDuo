@@ -3,39 +3,41 @@ package barqsoft.footballscores.api;
 import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.List;
 
-import barqsoft.footballscores.BuildConfig;
+import javax.inject.Inject;
+
+import barqsoft.footballscores.ScoresApplication;
 import barqsoft.footballscores.Util;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static barqsoft.footballscores.db.ScoresDBContract.ScoresTable;
 
-public class UpdateScoreService extends IntentService {
-    private static final String TAG = "UpdateScoreService";
+public class ScoresUpdateService extends IntentService {
+    private static final String TAG = "ScoresUpdateService";
 
-    public UpdateScoreService() {
+    @Inject
+    Retrofit mRetrofit;
+
+    public ScoresUpdateService() {
         super(TAG);
     }
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        ((ScoresApplication) getApplication()).getAppComponent().inject(this);
+    }
+
+    @Override
     protected void onHandleIntent(Intent intent) {
-
-        Retrofit retrofit = getRetrofit();
-
-        FootballDataApi footballDataApi = retrofit.create(FootballDataApi.class);
+        FootballDataApi footballDataApi = mRetrofit.create(FootballDataApi.class);
 
         Observable.merge(footballDataApi.getFixtures("n2"), footballDataApi.getFixtures("p2"))
                 .flatMap(fixtureData -> Observable.from(fixtureData.fixtures))
@@ -49,31 +51,6 @@ public class UpdateScoreService extends IntentService {
                         throwable -> Log.d(TAG, "onHandleIntent: " + throwable.toString()),
                         () -> Log.d(TAG, "onHandleIntent: Completed"));
 
-    }
-
-    @NonNull
-    private Retrofit getRetrofit() {
-        Interceptor authInterceptor = chain -> {
-            Request request = chain.request().newBuilder()
-                    .addHeader("X-Auth-Token", BuildConfig.FOOTBALL_API_KEY)
-                    .build();
-            return chain.proceed(request);
-        };
-
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(authInterceptor)
-                .addInterceptor(loggingInterceptor)
-                .build();
-
-        return new Retrofit.Builder()
-                .baseUrl("http://api.football-data.org/alpha/")
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
     }
 
     private boolean filterByLeague(FixtureData.Fixture fixture) {
@@ -107,5 +84,6 @@ public class UpdateScoreService extends IntentService {
         int insertedCount = getApplicationContext().getContentResolver().bulkInsert(ScoresTable.CONTENT_URI, data);
         Log.d(TAG, "Saved " + insertedCount + " items to the database");
     }
+
 }
 
